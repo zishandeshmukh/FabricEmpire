@@ -557,6 +557,11 @@ export class PgStorage implements IStorage {
       state: row.state,
       zipCode: row.zip_code,
       country: row.country,
+      hasStore: row.has_store || false,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active || false,
+      storeCreatedAt: row.store_created_at,
       createdAt: row.created_at,
       updatedAt: row.updated_at
     };
@@ -580,6 +585,11 @@ export class PgStorage implements IStorage {
       state: row.state,
       zipCode: row.zip_code,
       country: row.country,
+      hasStore: row.has_store || false,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active || false,
+      storeCreatedAt: row.store_created_at,
       createdAt: row.created_at,
       updatedAt: row.updated_at
     };
@@ -603,6 +613,11 @@ export class PgStorage implements IStorage {
       state: row.state,
       zipCode: row.zip_code,
       country: row.country,
+      hasStore: row.has_store || false,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active || false,
+      storeCreatedAt: row.store_created_at,
       createdAt: row.created_at,
       updatedAt: row.updated_at
     };
@@ -643,6 +658,11 @@ export class PgStorage implements IStorage {
       state: row.state,
       zipCode: row.zip_code,
       country: row.country,
+      hasStore: row.has_store || false,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active || false,
+      storeCreatedAt: row.store_created_at,
       createdAt: row.created_at,
       updatedAt: row.updated_at
     };
@@ -753,9 +773,147 @@ export class PgStorage implements IStorage {
       state: row.state,
       zipCode: row.zip_code,
       country: row.country,
+      hasStore: row.has_store,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active,
+      storeCreatedAt: row.store_created_at,
       createdAt: row.created_at,
       updatedAt: row.updated_at
     };
+  }
+
+  // User Store operations
+  async activateUserStore(userId: number, storeInfo: { name: string, description: string }): Promise<User | undefined> {
+    // Check if the user exists
+    const user = await this.getUserById(userId);
+    if (!user) return undefined;
+    
+    // Update user with store information
+    const result = await db.query(
+      `UPDATE users SET 
+        has_store = true, 
+        store_name = $1, 
+        store_description = $2, 
+        store_active = true, 
+        store_created_at = NOW(),
+        updated_at = NOW()
+      WHERE id = $3 RETURNING *`,
+      [storeInfo.name, storeInfo.description, userId]
+    );
+    
+    if (result.rows.length === 0) return undefined;
+    
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      username: row.username,
+      email: row.email,
+      password: row.password,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      phone: row.phone,
+      address: row.address,
+      city: row.city,
+      state: row.state,
+      zipCode: row.zip_code,
+      country: row.country,
+      hasStore: row.has_store,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active,
+      storeCreatedAt: row.store_created_at,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
+    };
+  }
+  
+  async updateUserStore(userId: number, storeInfo: { name?: string, description?: string, active?: boolean }): Promise<User | undefined> {
+    // Check if the user exists and has a store
+    const user = await this.getUserById(userId);
+    if (!user || !user.hasStore) return undefined;
+    
+    // Build dynamic update query
+    const updates: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+    
+    if (storeInfo.name !== undefined) {
+      updates.push(`store_name = $${paramIndex}`);
+      values.push(storeInfo.name);
+      paramIndex++;
+    }
+    
+    if (storeInfo.description !== undefined) {
+      updates.push(`store_description = $${paramIndex}`);
+      values.push(storeInfo.description);
+      paramIndex++;
+    }
+    
+    if (storeInfo.active !== undefined) {
+      updates.push(`store_active = $${paramIndex}`);
+      values.push(storeInfo.active);
+      paramIndex++;
+    }
+    
+    // Also update the updated_at timestamp
+    updates.push(`updated_at = NOW()`);
+    
+    // If no updates, return existing user
+    if (updates.length === 0) {
+      return user;
+    }
+    
+    // Add id to values array
+    values.push(userId);
+    
+    // Execute update
+    const result = await db.query(
+      `UPDATE users SET ${updates.join(', ')} WHERE id = $${paramIndex} RETURNING *`,
+      values
+    );
+    
+    if (result.rows.length === 0) return undefined;
+    
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      username: row.username,
+      email: row.email,
+      password: row.password,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      phone: row.phone,
+      address: row.address,
+      city: row.city,
+      state: row.state,
+      zipCode: row.zip_code,
+      country: row.country,
+      hasStore: row.has_store,
+      storeName: row.store_name,
+      storeDescription: row.store_description,
+      storeActive: row.store_active,
+      storeCreatedAt: row.store_created_at,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
+    };
+  }
+  
+  async deactivateUserStore(userId: number): Promise<boolean> {
+    // Check if the user exists and has a store
+    const user = await this.getUserById(userId);
+    if (!user || !user.hasStore) return false;
+    
+    // Deactivate the store but keep the information
+    const result = await db.query(
+      `UPDATE users SET 
+        store_active = false,
+        updated_at = NOW()
+      WHERE id = $1`,
+      [userId]
+    );
+    
+    return result.rowCount > 0;
   }
   
   // Order operations

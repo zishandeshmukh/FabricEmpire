@@ -92,6 +92,12 @@ export const users = pgTable("users", {
   isEmailVerified: boolean("is_email_verified").default(false),
   isPhoneVerified: boolean("is_phone_verified").default(false),
   preferences: jsonb("preferences").default({}),
+  // Store information for user sellers
+  hasStore: boolean("has_store").default(false),
+  storeName: text("store_name"),
+  storeDescription: text("store_description"),
+  storeActive: boolean("store_active").default(false),
+  storeCreatedAt: timestamp("store_created_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

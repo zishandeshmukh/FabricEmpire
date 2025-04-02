@@ -46,6 +46,11 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, user: Partial<InsertUser>): Promise<User | undefined>;
   
+  // User Store operations
+  activateUserStore(userId: number, storeInfo: { name: string, description: string }): Promise<User | undefined>;
+  updateUserStore(userId: number, storeInfo: { name?: string, description?: string, active?: boolean }): Promise<User | undefined>;
+  deactivateUserStore(userId: number): Promise<boolean>;
+  
   // Order operations
   getOrders(userId?: number): Promise<Order[]>;
   getOrderById(id: number): Promise<Order | undefined>;

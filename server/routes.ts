@@ -35,6 +35,7 @@ declare module 'express-session' {
     userId?: number;
     isAdmin?: boolean;
     cartId?: string;
+    hasStore?: boolean;
   }
 }
 
@@ -805,7 +806,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash password
       const hashedPassword = await hashPassword(userData.password);
       
-      // Create user with additional fields if provided
+      // Generate store name based on user's name or username
+      const storeName = userData.firstName && userData.lastName 
+        ? `${userData.firstName} ${userData.lastName}'s Store`
+        : `${userData.username}'s Store`;
+      
+      // Create user with additional fields and store information
       const user = await storage.createUser({
         username: userData.username,
         email: userData.email,
@@ -813,6 +819,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName: userData.firstName,
         lastName: userData.lastName,
         phone: userData.phone,
+        hasStore: true,
+        storeName: storeName,
+        storeDescription: `Welcome to ${storeName}, your one-stop shop for quality fabrics.`,
+        storeActive: true,
+        storeCreatedAt: new Date(),
       });
 
       // Set session for automatic login
@@ -820,6 +831,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.isAdmin = false;
+      req.session.hasStore = true;
 
       // Return user data without password
       const { password, ...userWithoutPassword } = user;
@@ -1185,10 +1197,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash the password
       const hashedPassword = await hashPassword(userData.password);
       
-      // Create the user with hashed password
+      // Generate store name based on user's name or username
+      const storeName = userData.firstName && userData.lastName 
+        ? `${userData.firstName} ${userData.lastName}'s Store`
+        : `${userData.username}'s Store`;
+      
+      // Create user with additional fields and store information
       const user = await storage.createUser({
         ...userData,
         password: hashedPassword,
+        hasStore: true,
+        storeName: storeName,
+        storeDescription: `Welcome to ${storeName}, your one-stop shop for quality fabrics.`,
+        storeActive: true,
+        storeCreatedAt: new Date(),
       });
       
       // Set session (auto-login after registration)
@@ -1196,13 +1218,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.isAdmin = false;
+      req.session.hasStore = true;
       
       // Return user data (without password)
       const { password, ...userWithoutPassword } = user;
       res.status(201).json({
         message: "Registration successful",
         username: user.username,
-        isAdmin: false
+        isAdmin: false,
+        hasStore: user.hasStore || false
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -1235,11 +1259,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Check if this is the admin user with special privileges
         const isAdminUser = admin.email === 'deshmukhzishan06@gmail.com' && admin.role === 'admin';
         req.session.isAdmin = isAdminUser;
+        req.session.hasStore = false;
 
         return res.json({ 
           message: "Login successful", 
           username: admin.username,
-          isAdmin: isAdminUser 
+          isAdmin: isAdminUser,
+          hasStore: false
         });
       }
 
@@ -1260,11 +1286,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.isAdmin = false;
+      req.session.hasStore = user.hasStore || false;
 
       res.json({ 
         message: "Login successful", 
         username: user.username,
-        isAdmin: false
+        isAdmin: false,
+        hasStore: user.hasStore || false
       });
     } catch (error) {
       console.error("Login error:", error);
@@ -1306,7 +1334,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Hash the password
       const hashedPassword = await hashPassword(userData.password);
       
-      // Create the user with hashed password
+      // Generate store name based on user's name or username
+      const storeName = userData.firstName && userData.lastName 
+        ? `${userData.firstName} ${userData.lastName}'s Store`
+        : `${userData.username}'s Store`;
+      
+      // Create the user with hashed password and store
       const user = await storage.createUser({
         username: userData.username,
         email: userData.email,
@@ -1314,6 +1347,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName: userData.firstName,
         lastName: userData.lastName,
         phone: userData.phone,
+        hasStore: true,
+        storeName: storeName,
+        storeDescription: `Welcome to ${storeName}, your one-stop shop for quality fabrics.`,
+        storeActive: true,
+        storeCreatedAt: new Date(),
       });
       
       // Set session (auto-login after registration)
@@ -1321,13 +1359,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       req.session.username = user.username;
       req.session.userId = user.id;
       req.session.isAdmin = false;
+      req.session.hasStore = user.hasStore || false;
       
       // Return user data (without password)
       const { password, ...userWithoutPassword } = user;
       res.status(201).json({
         message: "Registration successful",
         username: user.username,
-        isAdmin: false
+        isAdmin: false,
+        hasStore: user.hasStore || false
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -1351,10 +1391,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.json({ 
         isAuthenticated: true, 
         username: req.session.username,
-        isAdmin: isAdminUser
+        isAdmin: isAdminUser,
+        hasStore: req.session.hasStore || false
       });
     }
-    res.json({ isAuthenticated: false, isAdmin: false });
+    res.json({ isAuthenticated: false, isAdmin: false, hasStore: false });
   });
 
   return httpServer;
