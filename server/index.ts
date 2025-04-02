@@ -53,11 +53,11 @@ app.use((req, res, next) => {
     // Initialize database
     const dbInitialized = await initDb();
     if (!dbInitialized) {
-      console.error('Failed to initialize database schema.');
-      process.exit(1);
+      console.warn('Database initialization had issues. Tables may not exist or may be empty.');
+      console.log('Attempting to continue startup; you may need to run "npm run db:push" to create schema.');
+    } else {
+      console.log('Database connected and initialized successfully.');
     }
-    
-    console.log('Database connected and initialized successfully.');
     
     // Set up routes
     const server = await registerRoutes(app);

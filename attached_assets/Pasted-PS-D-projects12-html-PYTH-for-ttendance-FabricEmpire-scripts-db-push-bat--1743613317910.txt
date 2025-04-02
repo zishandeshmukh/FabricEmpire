@@ -1,0 +1,170 @@
+PS D:\projects12\html\PYTH for ttendance\FabricEmpire> scripts\db-push.bat                                                     
+Pushing Drizzle schema to database...                                                                                                                           
+📦 Loading environment variables...
+🔍 Testing connection to database: postgres://postgres:1234@localhost:5432/fabricshop
+🚀 Running database push...
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\projects12\html\PYTH for ttendance\FabricEmpire\drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
++ category enum will be created
++ media_type enum will be created
++ notification_type enum will be created
++ order_status enum will be created
++ payment_status enum will be created
+--- all enum conflicts resolved ---
+
+· You're about to add categories_name_unique unique constraint to the table, which contains 5 items. If this statement fails, you will receive an error from the database. Do you want to truncate categories table?
+
+· You're about to add admins_username_unique unique constraint to the table, which contains 1 items. If this statement fails, you will receive an error from the database. Do you want to truncate admins table?
+
+ Warning  Found data-loss statements:
+· You're about to change category column type from category_enum to category with 12 items
+
+THIS ACTION WILL CAUSE DATA LOSS AND CANNOT BE REVERTED
+
+Do you still want to push changes?
+error: column "category" cannot be cast automatically to type category
+    at D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.query (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:66575:26)
+    at async pgPush (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:70117:13)
+    at async Object.handler (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:79124:9)
+    at async run (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:78381:7) {
+  length: 189,
+  severity: 'ERROR',
+  code: '42804',
+  detail: undefined,
+  hint: 'You might need to specify "USING category::category".',
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'tablecmds.c',
+  line: '12900',
+  routine: 'ATPrepAlterColumnType'
+}
+✅ Database schema updated successfully
+Press any key to continue . . . 
+PS D:\projects12\html\PYTH for ttendance\FabricEmpire> scripts\db-push.bat
+Pushing Drizzle schema to database...
+📦 Loading environment variables...
+🔍 Testing connection to database: postgres://postgres:1234@localhost:5432/fabricshop
+🚀 Running database push...
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\projects12\html\PYTH for ttendance\FabricEmpire\drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+· You're about to add categories_name_unique unique constraint to the table, which contains 5 items. If this statement fails, you will receive an error from the database. Do you want to truncate categories table?
+
+· You're about to add admins_username_unique unique constraint to the table, which contains 1 items. If this statement fails, you will receive an error from the database. Do you want to truncate admins table?
+
+error: column "category" cannot be cast automatically to type category
+    at D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.query (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:66575:26)
+    at async pgPush (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:70117:13)
+    at async Object.handler (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:79124:9)
+    at async run (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:78381:7) {
+  length: 189,
+  severity: 'ERROR',
+  code: '42804',
+  detail: undefined,
+  hint: 'You might need to specify "USING category::category".',
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'tablecmds.c',
+  line: '12900',
+  routine: 'ATPrepAlterColumnType'
+}
+✅ Database schema updated successfully
+Press any key to continue . . . 
+PS D:\projects12\html\PYTH for ttendance\FabricEmpire> scripts\db-push.bat
+Pushing Drizzle schema to database...
+📦 Loading environment variables...
+🔍 Testing connection to database: postgres://postgres:1234@localhost:5432/fabricshop
+🚀 Running database push...
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'D:\projects12\html\PYTH for ttendance\FabricEmpire\drizzle.config.ts'
+Using 'pg' driver for database querying
+[✓] Pulling schema from database...
+· You're about to add categories_name_unique unique constraint to the table, which contains 5 items. If this statement fails, you will receive an error from the database. Do you want to truncate categories table?
+
+· You're about to add admins_username_unique unique constraint to the table, which contains 1 items. If this statement fails, you will receive an error from the database. Do you want to truncate admins table?
+
+ Warning  Found data-loss statements:
+
+
+THIS ACTION WILL CAUSE DATA LOSS AND CANNOT BE REVERTED
+
+Do you still want to push changes?
+error: column "category" cannot be cast automatically to type category
+    at D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Object.query (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:66575:26)
+    at async pgPush (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:70117:13)
+    at async Object.handler (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:79124:9)
+    at async run (D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\drizzle-kit\bin.cjs:78381:7) {
+  length: 189,
+  severity: 'ERROR',
+  code: '42804',
+  detail: undefined,
+  hint: 'You might need to specify "USING category::category".',
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'tablecmds.c',
+  line: '12900',
+  routine: 'ATPrepAlterColumnType'
+}
+✅ Database schema updated successfully
+Press any key to continue . . . 
+PS D:\projects12\html\PYTH for ttendance\FabricEmpire> npm run dev                                                                                              
+                                                                                                                                                                
+> rest-express@1.0.0 dev
+> tsx server/index.ts
+
+Successfully connected to PostgreSQL database!
+Database initialization error: error: there is no unique or exclusion constraint matching the ON CONFLICT specification
+    at D:\projects12\html\PYTH for ttendance\FabricEmpire\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async initDb (D:\projects12\html\PYTH for ttendance\FabricEmpire\server\db.ts:104:7)
+    at async <anonymous> (D:\projects12\html\PYTH for ttendance\FabricEmpire\server\index.ts:54:27) {
+  length: 148,
+  severity: 'ERROR',
+  code: '42P10',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'plancat.c',
+  line: '945',
+  routine: 'infer_arbiter_indexes'
+}
+Failed to initialize database schema.
+PS D:\projects12\html\PYTH for ttendance\FabricEmpire> 
